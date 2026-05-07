@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ATA 1881 </title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&family=Space+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #08090d;
+            --panel-bg: rgba(13, 15, 22, 0.9);
+            --accent-primary: #ffb400;
+            --accent-secondary: #ff7b00;
+            --text-primary: #f0f0f5;
+            --text-muted: #6b7280;
+            --border-glow: rgba(255, 180, 0, 0.3);
+            --gold-gradient: linear-gradient(90deg, #ffb400, #be6806, #ffb400, #f3a909, #ffb400);
+        }
+
+        @keyframes shimmerGold {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        @keyframes shimmerGoldReverse {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes shimmerFireUp {
+            0% {
+                background-position: 0 200%;
+            }
+
+            100% {
+                background-position: 0 -200%;
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                filter: brightness(1) drop-shadow(0 0 5px rgba(255, 180, 0, 0.4));
+            }
+
+            50% {
+                filter: brightness(1.4) drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+            }
+        }
+
+        @keyframes pulseRed {
+
+            0%,
+            100% {
+                filter: brightness(1) drop-shadow(0 0 5px rgba(255, 0, 0, 0.4));
+            }
+
+            50% {
+                filter: brightness(1.5) drop-shadow(0 0 15px rgba(255, 69, 0, 0.8));
+            }
+        }
+
+        .gold-shimmer {
+            background: linear-gradient(110deg, #ff8c00 0%, #ffd700 50%, #ff8c00 100%) !important;
+            background-size: 200% 100% !important;
+            animation: shimmerGold 2s linear infinite, pulseGlow 3s infinite ease-in-out !important;
+        }
+
+        .gold-shimmer-left {
+            background: linear-gradient(-110deg, #ff8c00 0%, #ffd700 50%, #ff8c00 100%) !important;
+            background-size: 200% 100% !important;
+            animation: shimmerGoldReverse 2s linear infinite, pulseGlow 3s infinite ease-in-out !important;
+        }
+
+        .fire-shimmer {
+            background: linear-gradient(0deg, #ff4500 0%, #ff0000 50%, #ff4500 100%) !important;
+            background-size: 100% 200% !important;
+            animation: shimmerFireUp 1.5s linear infinite, pulseRed 2s infinite ease-in-out !important;
+        }
+
+        .gold-text-shimmer {
+            background: linear-gradient(110deg, #b8860b 0%, #d4af37 20%, #ffd700 40%, #fff 50%, #ffd700 60%, #d4af37 80%, #b8860b 100%) !important;
+            background-size: 200% 100% !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            animation: shimmerGold 2s linear infinite !important;
+            filter: drop-shadow(0 0 8px rgba(255, 180, 0, 0.3));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(255, 180, 0, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(255, 123, 0, 0.03) 0%, transparent 40%);
+        }
+
+        .main-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            position: relative;
+            padding: 20px;
+            gap: 20px;
+            background: radial-gradient(circle at center, #10121a 0%, #08090d 100%);
+            overflow: hidden;
+        }
+
+        .panels-container {
+            flex: 1;
+            display: flex;
+            gap: 0;
+            position: relative;
+            align-items: stretch;
+        }
+
+        .method-badge {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 90px;
+            background: var(--accent-primary);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 15px;
+            box-shadow: 0 0 30px rgba(255, 180, 0, 0.4);
+            line-height: 1;
+        }
+
+        .badge-label-left,
+        .badge-label-right {
+            position: absolute;
+            top: 10px;
+            font-size: 0.32rem;
+            white-space: nowrap;
+            color: rgba(255, 180, 0, 0.5);
+            letter-spacing: 2px;
+            font-weight: 800;
+            z-index: 190;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(255, 180, 0, 0.2);
+        }
+
+        .badge-label-left {
+            right: calc(50% + 50px);
+            text-align: right;
+            top: 40px;
+        }
+
+        .badge-label-right {
+            left: calc(50% + 70px);
+            text-align: left;
+            top: 40px;
+        }
+
+        .method-badge .main-text {
+            color: #000;
+            font-weight: 900;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .method-badge .sub-text {
+            color: rgba(0, 0, 0, 0.7);
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .sidebar {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 65px;
+            height: 240px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(13, 15, 22, 0.98);
+            border: 1px solid rgba(255, 180, 0, 0.2);
+            clip-path: polygon(20% 0, 100% 0, 100% 100%, 20% 100%, 0 90%, 0 10%);
+            z-index: 100;
+            padding: 5px 0;
+        }
+
+        .sidebar-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            opacity: 0.4;
+        }
+
+        .sidebar-item.active {
+            opacity: 1;
+        }
+
+        .sidebar-item:hover {
+            opacity: 0.8;
+            background: rgba(255, 180, 0, 0.05);
+        }
+
+        /* Sliding Yellow Effect */
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 3px;
+            height: calc(50% - 5px);
+            background: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-primary);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: none;
+        }
+
+        /* Shift the slider based on mode */
+        .sidebar.mode-symbolic::after {
+            transform: translateY(100%);
+        }
+
+        .side-icon {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        /* Login Page (Page 2) Styles - PREMIUM COOL VERSION */
+        #page-2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #08090d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        #page-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(rgba(255, 180, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 180, 0, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        #page-2::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .login-box {
+            background: rgba(13, 15, 22, 0.95);
+            padding: 40px 60px 60px 60px;
+            border: 1px solid rgba(255, 180, 0, 0.1);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            width: 480px;
+            max-width: 95%;
+            text-align: center;
+            position: relative;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 10px var(--accent-primary));
+            display: inline-block;
+        }
+
+        .corner-decor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .corner-decor::before,
+        .corner-decor::after,
+        .login-box::before,
+        .login-box::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 2px solid var(--accent-primary);
+        }
+
+        .login-box::before {
+            top: -2px;
+            left: -2px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .login-box::after {
+            top: -2px;
+            right: -2px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner-decor::before {
+            bottom: -2px;
+            left: -2px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner-decor::after {
+            bottom: -2px;
+            right: -2px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .login-title {
+            color: var(--accent-primary);
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(255, 180, 0, 0.5);
+            line-height: 1.1;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .title-year {
+            display: block;
+            font-size: 1.8rem;
+            letter-spacing: 15px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .cyber-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 180, 0, 0.2);
+            padding: 20px;
+            color: #fff;
+            font-family: 'Space Mono', monospace;
+            text-align: center;
+            font-size: 1.4rem;
+            letter-spacing: 8px;
+            outline: none;
+            transition: 0.3s;
+            margin-bottom: 30px;
+            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+        }
+
+        .cyber-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(255, 180, 0, 0.1);
+        }
+
+        .access-btn {
+            width: 100%;
+            height: 60px;
+            background: transparent;
+            color: var(--accent-primary);
+            font-weight: 900;
+            letter-spacing: 4px;
+            cursor: pointer;
+            border: 2px solid var(--accent-primary);
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            position: relative;
+            clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .access-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-primary);
+            transition: 0.3s;
+            z-index: -1;
+        }
+
+        .access-btn:hover {
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 180, 0, 0.4);
+        }
+
+        .access-btn:hover::before {
+            left: 0;
+        }
+
+        .status-msg {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            font-family: 'Space Mono', monospace;
+            color: #ff4444;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .status-msg.error {
+            opacity: 1;
+            animation: glitchText 0.3s infinite;
+        }
+
+        /* Page 1 (Splash/Clock) Styles */
+        #page-1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #08090d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        #page-1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 180, 0, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .clock-container {
+            text-align: center;
+            position: relative;
+            z-index: 2010;
+        }
+
+        #clock-time {
+            font-size: 6rem;
+            font-weight: 800;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        #clock-date {
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+            color: var(--text-muted);
+            margin-top: 20px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .footer-splash {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 500;
+        }
+
+        #access-trigger {
+            cursor: pointer;
+            transition: 0.3s;
+            color: inherit;
+        }
+
+        #access-trigger:active {
+            color: var(--accent-primary);
+        }
+
+        @media (max-width: 600px) {
+            #clock-time {
+                font-size: 4rem;
+            }
+
+            #clock-date {
+                font-size: 1rem;
+                letter-spacing: 5px;
+            }
+        }
+
+        @keyframes glitchText {
+            0% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        color: var(--accent-primary);
+        }
+
+        .sidebar-item span {
+            font-size: 0.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+        }
+
+        .method-indicator {
+            font-size: 0.7rem;
+            color: var(--accent-secondary);
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            /* Tightened margin */
+            opacity: 0.8;
+        }
+
+        .divider {
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            bottom: 10%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--accent-primary), transparent);
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px var(--accent-primary);
+            z-index: 5;
+            opacity: 0.3;
+        }
+
+        .panel {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem;
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 180, 0, 0.1);
+            position: relative;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 0;
+        }
+
+        .panel-left {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 5% 100%, 0 95%);
+            border-right: none;
+        }
+
+        .panel-right {
+            clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 0 100%);
+            border-left: none;
+        }
+
+        .panel:hover {
+            border-color: var(--accent-primary);
+            background: rgba(18, 21, 30, 0.95);
+            transform: scale(1.005);
+        }
+
+        .panel-header {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .panel-header h2 {
+            font-size: 1.8rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: var(--accent-primary);
+            text-shadow: 0 0 10px rgba(255, 180, 0, 0.5);
+            line-height: 1;
+            /* Reduced line height */
+        }
+
+        .title-sub {
+            display: block;
+            font-size: 1rem;
+            letter-spacing: 10px;
+            opacity: 0.8;
+            margin-top: 0;
+            /* No margin */
+        }
+
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-primary);
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 0;
+        }
+
+        textarea {
+            width: 100%;
+            flex: 1;
+            background: #050507;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            transition: 0.3s;
+            font-family: 'Space Mono', monospace;
+            clip-path: polygon(0 0, 98% 0, 100% 2%, 100% 100%, 2% 100%, 0 98%);
+        }
+
+        textarea:focus {
+            border-color: var(--accent-primary);
+            background: #08080a;
+            box-shadow: inset 0 0 20px rgba(255, 180, 0, 0.05);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: flex-end;
+        }
+
+
+        .top-control-bar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            height: 40px;
+            width: auto;
+        }
+
+        .bar-btn {
+            height: 27px;
+            width: 140px;
+            border: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
+        }
+
+        .bar-btn.clear {
+            background: #b71c1c;
+            z-index: 100;
+        }
+
+        .bar-btn.copy {
+            background: #ffb400;
+        }
+
+        .btn-left {
+            clip-path: polygon(0 0, 80% 0, 100% 100%, 20% 100%);
+            margin-right: 23px;
+            padding-right: 13px;
+            transform: translateY(60px);
+            width: 145px;
+            height: 27px;
+        }
+
+        .btn-mid {
+            clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+            transform: translateY(60.5px);
+            height: 28px;
+        }
+
+        .btn-right {
+            clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
+            margin-left: 23px;
+            padding-left: 13px;
+            transform: translateY(60px);
+            width: 145px;
+            height: 27px;
+        }
+
+        .bar-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .click-flash {
+            background: linear-gradient(110deg, #ff8c00 0%, #ffd700 50%, #ff8c00 100%) !important;
+            background-size: 200% 100% !important;
+            animation: shimmerGold 0.4s linear infinite !important;
+            box-shadow: 0 0 20px #ff8c00, 0 0 40px #ffd700 !important;
+            color: #000 !important;
+        }
+
+        .bar-btn.clear.active-state {
+            background: #fff !important;
+            color: #000 !important;
+        }
+
+        .footer-logo {
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 900px) {
+            body {
+                overflow: hidden;
+            }
+
+            .main-wrapper {
+                padding: 5px;
+                padding-top: 85px;
+                padding-bottom: 65px;
+                gap: 0;
+            }
+
+            .panels-container {
+                flex-direction: row;
+                gap: 0;
+            }
+
+            .divider {
+                display: none;
+            }
+
+            .panels-container {
+                flex-direction: row;
+                gap: 0;
+                align-items: stretch;
+            }
+
+            .panel {
+                padding: 0.5rem;
+                padding-top: 2rem;
+                display: flex;
+                flex-direction: column;
+                min-height: 250px;
+                flex: 1;
+            }
+
+            .panel-header {
+                margin-bottom: 0.3rem;
+            }
+
+            .panel-header h2 {
+                font-size: 0.55rem;
+                /* Shrunk title */
+                letter-spacing: 0.5px;
+            }
+
+            .method-indicator {
+                font-size: 0.4rem;
+            }
+
+            textarea {
+                padding: 0.5rem;
+                font-size: 11px;
+                flex: 1;
+                /* Stretch to fill panel height */
+            }
+
+            .top-control-bar {
+                width: 90%;
+                height: 38px;
+                top: 20px;
+            }
+
+            .bar-btn {
+                width: 33.33%;
+                font-size: 0.6rem;
+                letter-spacing: 0.5px;
+            }
+
+            .bar-btn.clear {
+                margin-left: -20%;
+                margin-right: -20%;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                top: auto;
+                transform: none;
+                margin: 0;
+                clip-path: none;
+                border-top: 1px solid var(--accent-primary);
+                background: #08090d;
+                padding: 0;
+                display: flex;
+                z-index: 500;
+            }
+
+            .sidebar::after {
+                top: 0;
+                left: 0;
+                width: 50%;
+                height: 3px;
+                background: var(--accent-primary);
+                box-shadow: 0 0 15px var(--accent-primary);
+                transform: translateX(0);
+                transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                position: absolute;
+                content: '';
+            }
+
+            .sidebar.mode-symbolic::after {
+                transform: translateX(100%);
+            }
+
+            .sidebar-item {
+                flex: 1;
+                flex-direction: row;
+                gap: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .sidebar-item span {
+                writing-mode: horizontal-tb;
+                transform: none;
+                font-size: 0.6rem;
+            }
+
+            .side-icon {
+                margin-bottom: 0;
+                font-size: 0.8rem;
+            }
+
+            .method-badge {
+                width: 110px;
+                /* Enlarged slightly */
+                height: 70px;
+                padding-top: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .method-badge .main-text {
+                font-size: 0.65rem;
+            }
+
+            .method-badge .sub-text {
+                font-size: 0.5rem;
+            }
+
+            .footer-logo {
+                display: none;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050507;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Page 1: Splash/Clock -->
+    <div id="page-1">
+        <div class="clock-container">
+            <div id="clock-time" class="gold-text-shimmer">00:00:00</div>
+            <div id="clock-date">00.00.0000</div>
+        </div>
+        <div class="footer-splash">
+            ATA SOFTWARE <span id="access-trigger">2026</span>
+        </div>
+    </div>
+
+    <!-- Page 2: Login -->
+    <div id="page-2" style="display: none;">
+        <div class="login-bg"></div>
+        <div class="login-box">
+            <div class="corner-decor"></div>
+            <img src="https://i.hizliresim.com/ojnlmyg.png" alt="ATA LOGO" class="login-logo">
+            <h1 class="login-title">ATA SİSTEM <br><span class="title-year">1881</span></h1>
+            <div class="password-container">
+                <input type="password" id="sys-pass" class="cyber-input" placeholder="********" maxlength="8">
+            </div>
+            <button class="access-btn" onclick="tryAccess()">SİSTEME ERİŞ</button>
+            <div id="login-status" class="status-msg">ACCESS DENIED: INVALID KEY</div>
+        </div>
+    </div>
+
+    <!-- Page 3: Cipher Tool -->
+    <div id="page-3" style="display: none;">
+        <div class="main-wrapper">
+            <div class="badge-label-left">ATA PASS SECURITY // 2026</div>
+            <div class="method-badge gold-shimmer" id="current-method-badge">
+                <span class="main-text" id="badge-main">SAYISAL</span>
+                <span class="sub-text" id="badge-sub">123</span>
+            </div>
+            <div class="badge-label-right">SECURE PROTOCOL 1881</div>
+            <div class="top-control-bar">
+                <button class="bar-btn copy btn-left gold-shimmer-left"
+                    onclick="copyToClipboard('text-input')">Kopyala</button>
+                <button class="bar-btn clear btn-mid fire-shimmer" onclick="clearAll()">Temizle</button>
+                <button class="bar-btn copy btn-right gold-shimmer"
+                    onclick="copyToClipboard('code-input')">Kopyala</button>
+            </div>
+
+            <div class="panels-container">
+                <div class="divider"></div>
+
+                <!-- Left Panel: Encrypt -->
+                <div class="panel panel-left">
+                    <div class="panel-header">
+                        <h2 id="left-title" class="gold-text-shimmer">METİN ŞİFRELE<br><span class="title-sub">^^</span>
+                        </h2>
+                        <div class="method-indicator" id="method-name">Sayısal Protokol</div>
+                    </div>
+                    <div class="content-area">
+                        <textarea id="text-input" placeholder="Şifrelenecek metni giriniz..."></textarea>
+                    </div>
+                    <div class="footer-logo">ATA PASS SECURITY // 2026</div>
+                </div>
+
+                <!-- Right Panel: Decrypt -->
+                <div class="panel panel-right">
+                    <div class="panel-header">
+                        <h2 id="right-title" class="gold-text-shimmer">ŞİFRE ÇÖZÜMLE<br><span
+                                class="title-sub">*^^*</span>
+                        </h2>
+                        <div class="method-indicator" id="method-name">**^^**</div>
+                    </div>
+                    <div class="content-area">
+                        <textarea id="code-input" placeholder="Çözümlenecek şifreyi giriniz..."></textarea>
+                    </div>
+                    <div class="footer-logo">SECURE PROTOCOL</div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-item active" onclick="setMethod('numeric')" id="btn-numeric">
+                    <div class="side-icon">123</div>
+                    <span>Sayısal</span>
+                </div>
+                <div class="sidebar-item" onclick="setMethod('symbolic')" id="btn-symbolic">
+                    <div class="side-icon">!@#</div>
+                    <span>Sembol</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Page 1: Clock Logic
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+
+                document.getElementById('clock-time').textContent = `${hours}:${minutes}:${seconds}`;
+                document.getElementById('clock-date').textContent = `${day}/${month}/${year}`;
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Page 1: Access Trigger Logic
+            let clickCount = 0;
+            document.getElementById('access-trigger').addEventListener('click', () => {
+                clickCount++;
+                if (clickCount === 3) {
+                    document.getElementById('page-1').style.display = 'none';
+                    document.getElementById('page-2').style.display = 'flex';
+                    clickCount = 0;
+                }
+                setTimeout(() => { if (clickCount < 3) clickCount = 0; }, 1000);
+            });
+
+            // Page Navigation
+            function tryAccess() {
+                const pass = document.getElementById('sys-pass').value;
+                const status = document.getElementById('login-status');
+
+                // Password logic - secure key
+                if (pass === 'A1881a') {
+                    document.getElementById('page-2').style.display = 'none';
+                    document.getElementById('page-3').style.display = 'block';
+                } else {
+                    status.classList.add('error');
+                    setTimeout(() => status.classList.remove('error'), 2000);
+                }
+            }
+
+            // Allow 'Enter' key to trigger access
+            document.getElementById('sys-pass')?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') tryAccess();
+            });
+
+            const numericMap = {
+                'a': '21', 'b': '22', 'c': '23', 'ç': '23',
+                'd': '31', 'e': '32', 'f': '33',
+                'g': '41', 'ğ': '41', 'h': '42', 'ı': '43', 'i': '43',
+                'j': '51', 'k': '52', 'l': '53',
+                'm': '61', 'n': '62', 'o': '63', 'ö': '63',
+                'p': '71', 'q': '72', 'r': '73', 's': '74', 'ş': '74',
+                't': '81', 'u': '82', 'ü': '82',
+                'v': '83', 'w': '91', 'x': '92', 'y': '93', 'z': '94',
+                ' ': '0',
+                '0': 'A', '1': 'B', '2': 'C', '3': 'D', '4': 'E',
+                '5': 'F', '6': 'G', '7': 'H', '8': 'I', '9': 'J'
+            };
+
+            const symbolicMap = {
+                'a': '!', 'b': "'", 'c': '^', 'ç': '^',
+                'd': '+', 'e': '%', 'f': '&',
+                'g': '/!', 'ğ': '/!', 'h': "/'", 'ı': '/^', 'i': '/^',
+                'j': '/+', 'k': '/%', 'l': '/&', 'm': '((!',
+                'n': "(('", 'o': '((^', 'p': '((+', 'q': '((%',
+                'r': '((&', 's': '(=!', 'ş': '(=!', 't': "(='",
+                'u': '(=^', 'ü': '(=^', 'v': '(=+', 'w': '(=%',
+                'x': '(=&', 'y': '(+!', 'z': "(+'",
+                ' ': '*/*',
+                '0': 'K', '1': 'L', '2': 'M', '3': 'N', '4': 'O',
+                '5': 'P', '6': 'R', '7': 'S', '8': 'T', '9': 'U'
+            };
+
+            let currentMode = 'numeric'; // 'numeric' or 'symbolic'
+
+            function getMaps() {
+                const encMap = currentMode === 'numeric' ? numericMap : symbolicMap;
+                const decMap = {};
+
+                // Priority list for decryption fallbacks (Latin first now as requested)
+                const priority = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+                const keys = Object.keys(encMap);
+                // Sort keys so priority ones are handled last (to overwrite)
+                keys.sort((a, b) => {
+                    const aP = priority.indexOf(a);
+                    const bP = priority.indexOf(b);
+                    return aP - bP;
+                });
+
+                for (let k of keys) {
+                    decMap[encMap[k]] = k;
+                }
+
+                return { enc: encMap, dec: decMap };
+            }
+
+            function setMethod(method) {
+                currentMode = method;
+                const sidebar = document.querySelector('.sidebar');
+                document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+                document.getElementById('btn-' + method).classList.add('active');
+                document.getElementById('method-name').innerText = method === 'numeric' ? 'Sayısal Protokol' : 'Sembolik Protokol';
+                document.getElementById('badge-main').innerText = method === 'numeric' ? 'SAYISAL' : 'SEMBOL';
+                document.getElementById('badge-sub').innerText = method === 'numeric' ? '123' : '!@#';
+
+                if (method === 'symbolic') {
+                    sidebar.classList.add('mode-symbolic');
+                } else {
+                    sidebar.classList.remove('mode-symbolic');
+                }
+
+                encryptNow();
+            }
+
+            const textInput = document.getElementById('text-input');
+            const codeInput = document.getElementById('code-input');
+
+            function encryptNow() {
+                const { enc } = getMaps();
+                const text = textInput.value.toLowerCase();
+                if (!text) { codeInput.value = ''; return; }
+
+                if (currentMode === 'numeric') {
+                    let result = [];
+                    for (let char of text) {
+                        if (enc[char]) result.push(enc[char]);
+                        else if (char === '\n') result.push('\n'); // Keep line breaks
+                    }
+                    codeInput.value = result.join('.');
+                } else {
+                    let res = '';
+                    for (let char of text) {
+                        if (enc[char]) res += enc[char];
+                        else if (char === '\n') res += '\n';
+                    }
+                    codeInput.value = res;
+                }
+            }
+
+            function decryptNow() {
+                const { dec } = getMaps();
+                const code = codeInput.value;
+                if (!code) { textInput.value = ''; return; }
+
+                let result = '';
+                if (currentMode === 'numeric') {
+                    // Split by dot but handle spaces or multiple dots
+                    const parts = code.split('.');
+                    for (let part of parts) {
+                        const p = part.trim();
+                        if (dec[p]) result += dec[p];
+                        else if (p === '') continue;
+                    }
+                } else {
+                    // Symbolic Decryption (Variable Length - Longest Match First)
+                    let tempCode = code;
+                    const sortedPatterns = Object.keys(dec).sort((a, b) => b.length - a.length);
+
+                    while (tempCode.length > 0) {
+                        let matched = false;
+                        for (let pattern of sortedPatterns) {
+                            if (tempCode.startsWith(pattern)) {
+                                result += dec[pattern];
+                                tempCode = tempCode.substring(pattern.length);
+                                matched = true;
+                                break;
+                            }
+                        }
+                        if (!matched) {
+                            // Skip unknown char or preserve if it's a newline
+                            const char = tempCode[0];
+                            if (char === '\n') result += '\n';
+                            tempCode = tempCode.substring(1);
+                        }
+                    }
+                }
+                textInput.value = result;
+            }
+
+            textInput.addEventListener('input', encryptNow);
+            codeInput.addEventListener('input', decryptNow);
+
+            function clearAll() {
+                textInput.value = '';
+                codeInput.value = '';
+                const btn = document.querySelector('.bar-btn.clear');
+                btn.classList.add('active-state');
+                setTimeout(() => {
+                    btn.classList.remove('active-state');
+                }, 800);
+            }
+
+            function copyToClipboard(id) {
+                const el = document.getElementById(id);
+                el.select();
+                document.execCommand('copy');
+                const btn = event.target;
+                const originalText = btn.innerText;
+
+                // Orange & Gold flash effect
+                btn.classList.add('click-flash');
+                btn.innerText = 'Kopyalandı!';
+
+                setTimeout(() => {
+                    btn.classList.remove('click-flash');
+                    btn.innerText = originalText;
+                }, 400);
+            }
+        </script>
+</body>
+
+</html>
